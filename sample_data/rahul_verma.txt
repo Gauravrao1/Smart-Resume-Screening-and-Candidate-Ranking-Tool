@@ -1,0 +1,16 @@
+Rahul Verma
+rahul.verma@example.com
+9876501234
+
+OBJECTIVE
+Fresher looking for a software job.
+
+EDUCATION
+B.Tech in Electronics - ABC College, 2020 - 2024
+
+PROJECTS
+Attendance System
+- Built with Python and SQLite
+
+SKILLS
+Python, SQL, HTML, CSS, Git

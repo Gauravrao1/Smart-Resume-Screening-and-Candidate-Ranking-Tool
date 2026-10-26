@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <p class="eyebrow">CANDIDATE INTELLIGENCE <span></span> 01</p>
+  <h1>Find the best candidates in seconds</h1>
+  <p>Paste a job description, upload resumes, and get every candidate ranked with a clear explanation of why.</p>
+</section>
+
+{% if error %}<div class="alert" role="alert">{{ error }}</div>{% endif %}
+
+<form class="panel form-panel" method="post" action="{{ url_for('screen_page') }}" enctype="multipart/form-data" id="screenForm">
+  <div class="panel-heading">
+    <div>
+      <span class="section-kicker">START A SCREENING</span>
+      <h2>Tell us what you are looking for</h2>
+    </div>
+    <span class="step-count">3 steps</span>
+  </div>
+  <div class="field">
+    <div class="label-row">
+      <label for="jd_text">1. Job description</label>
+      <button type="button" class="link" id="loadSample" data-url="{{ url_for('static', filename='sample/job_description.txt') }}">Load sample</button>
+    </div>
+    <textarea id="jd_text" name="jd_text" rows="11" required maxlength="20000"
+      placeholder="Paste the full job description. Mention skills, years of experience and education required. Put optional skills under a 'Nice to have' heading.">{{ jd_text }}</textarea>
+  </div>
+
+  <div class="field">
+    <label for="extra_skills">2. Extra required skills <small>(optional, comma separated)</small></label>
+    <input id="extra_skills" name="extra_skills" maxlength="500" value="{{ extra }}" placeholder="e.g. Python, Docker, communication">
+  </div>
+
+  <div class="field">
+    <label for="resumes">3. Resumes <small>({{ exts|join(', ') }} - up to {{ max_files }} files, {{ max_mb }} MB total)</small></label>
+    <label class="upload-box" for="resumes">
+      <span class="upload-icon">↑</span>
+      <span><strong>Drop resumes here or <u>browse files</u></strong><small>PDF, DOCX or TXT · up to {{ max_files }} files</small></span>
+    </label>
+    <input class="visually-hidden" id="resumes" name="resumes" type="file" multiple required accept="{{ exts|join(',') }}">
+    <ul id="fileList" class="files"></ul>
+  </div>
+
+  <div class="form-footer">
+    <span class="helper"><span class="lock">⌑</span> Your files are processed in memory and never stored.</span>
+    <button class="btn primary big" type="submit" id="submitBtn">Screen &amp; rank candidates <span>→</span></button>
+  </div>
+</form>
+
+<section class="feature-row" id="how-it-works" aria-label="How SmartScreen works">
+  <div class="feature-card"><span class="feature-number">01</span><span class="feature-icon">⌁</span><h3>Understand the role</h3><p>We identify must-have skills, experience and education from your brief.</p></div>
+  <div class="feature-card"><span class="feature-number">02</span><span class="feature-icon">✦</span><h3>Read every resume</h3><p>Profiles are parsed consistently across PDF, DOCX and plain text files.</p></div>
+  <div class="feature-card"><span class="feature-number">03</span><span class="feature-icon">↗</span><h3>Make a confident call</h3><p>Compare explainable scores instead of scanning keywords in the dark.</p></div>
+</section>
+{% endblock %}

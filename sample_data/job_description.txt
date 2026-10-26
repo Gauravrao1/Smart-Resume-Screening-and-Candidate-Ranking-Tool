@@ -1,0 +1,16 @@
+Machine Learning Engineer
+
+We are looking for a Machine Learning Engineer to build NLP-powered products.
+
+Requirements
+- Bachelor's degree in Computer Science or a related field
+- 3+ years of experience building machine learning systems
+- Strong Python skills with Pandas, NumPy and scikit-learn
+- Experience with NLP and text classification
+- Good SQL knowledge and experience with Git
+- Experience deploying models with Docker and REST APIs
+
+Nice to have
+- AWS or GCP experience
+- PyTorch or TensorFlow
+- Kubernetes

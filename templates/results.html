@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block title %}Results - Smart Resume Screener{% endblock %}
+{% block content %}
+<div class="bar">
+  <div>
+    <p class="eyebrow">SCREENING COMPLETE <span></span> 02</p>
+    <h1>Ranked candidates <small>({{ results|length }})</small></h1>
+  </div>
+  <div class="actions">
+    <button class="btn" type="button" id="csvBtn" {% if not results %}disabled{% endif %}>Download CSV</button>
+    <a class="btn primary" href="{{ url_for('index') }}">New screening</a>
+  </div>
+</div>
+
+{% if results %}
+<div class="summary-strip">
+  <div><strong>{{ results|length }}</strong><span>candidates reviewed</span></div>
+  <div><strong>{{ results[0].score }}</strong><span>top candidate score</span></div>
+  <div><strong>{{ requirements.required_skills|length }}</strong><span>required skills found</span></div>
+</div>
+{% endif %}
+
+<section class="panel req">
+  <div class="req-heading"><div><span class="section-kicker">ROLE SNAPSHOT</span><h2>What the job asks for</h2></div><span class="brief-icon">✦</span></div>
+  <dl>
+    <dt>Required skills</dt>
+    <dd>{% for s in requirements.required_skills %}<span class="chip">{{ s }}</span>{% else %}<em>None recognised</em>{% endfor %}</dd>
+    <dt>Preferred skills</dt>
+    <dd>{% for s in requirements.preferred_skills %}<span class="chip soft">{{ s }}</span>{% else %}<em>None</em>{% endfor %}</dd>
+    <dt>Experience</dt>
+    <dd>{% if requirements.min_years %}{{ '%g'|format(requirements.min_years) }}+ years{% else %}<em>Not specified</em>{% endif %}</dd>
+    <dt>Education</dt>
+    <dd>{{ requirements.min_education or 'Not specified' }}</dd>
+  </dl>
+</section>
+
+{% for e in errors %}
+<div class="alert" role="alert"><strong>{{ e.filename }}</strong>: {{ e.error }}</div>
+{% endfor %}
+
+{% if results %}
+<div class="tablewrap">
+<table class="rank">
+  <thead><tr><th>#</th><th>Candidate</th><th>Score</th><th>Verdict</th><th>Req. skills</th><th>Experience</th><th>Education</th></tr></thead>
+  <tbody>
+  {% for r in results %}
+    <tr>
+      <td>{{ r.rank }}</td>
+      <td><a href="#c{{ r.rank }}">{{ r.name }}</a><br><small>{{ r.filename }}</small></td>
+      <td><strong>{{ r.score }}</strong></td>
+      <td><span class="badge {{ r.label.split()[0]|lower }}">{{ r.label }}</span></td>
+      <td>{{ r.matched_required|length }}/{{ r.matched_required|length + r.missing_required|length }}</td>
+      <td>{{ '%g'|format(r.experience_years) }} yrs</td>
+      <td>{{ r.education_label }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+
+{% for r in results %}
+<details class="card" id="c{{ r.rank }}" {% if loop.first %}open{% endif %}>
+  <summary>
+    <span class="rk">#{{ r.rank }}</span>
+    <span class="nm">{{ r.name }}</span>
+    <span class="badge {{ r.label.split()[0]|lower }}">{{ r.label }}</span>
+    <span class="sc">{{ r.score }}</span>
+  </summary>
+  <div class="body">
+    <p class="contact">{{ r.email or 'No email found' }}{% if r.phone %} &middot; {{ r.phone }}{% endif %} &middot; <small>{{ r.filename }}</small></p>
+
+    <div class="grid">
+      <div>
+        <h3>Score breakdown</h3>
+        {% for key, label, weight in [('skills','Skills match',45),('similarity','Text similarity',25),('experience','Experience',15),('education','Education',10),('extras','Certs &amp; projects',5)] %}
+        <div class="meterrow"><span>{{ label|safe }} <small>({{ weight }}%)</small></span>
+          <meter min="0" max="100" low="40" high="70" optimum="100" value="{{ r.breakdown[key] }}"></meter>
+          <b>{{ '%g'|format(r.breakdown[key]) }}</b></div>
+        {% endfor %}
+      </div>
+      <div>
+        <h3>Profile</h3>
+        <p><b>Experience:</b> {{ '%g'|format(r.experience_years) }} years</p>
+        <p><b>Education:</b> {{ r.education_label }}{% if r.education_detail %} <small>- {{ r.education_detail }}</small>{% endif %}</p>
+        <p><b>Certifications:</b> {% if r.certifications %}{{ r.certifications|join('; ') }}{% else %}<em>none found</em>{% endif %}</p>
+        <p><b>Projects:</b> {% if r.projects %}{{ r.projects|join('; ') }}{% else %}<em>none found</em>{% endif %}</p>
+      </div>
+    </div>
+
+    <h3>Required skills</h3>
+    <p>{% for s in r.matched_required %}<span class="chip ok">&#10003; {{ s }}{% if s in r.listed_only %} <small>(listed only)</small>{% endif %}</span>{% endfor %}
+       {% for s in r.missing_required %}<span class="chip miss">&#10007; {{ s }}</span>{% endfor %}
+       {% if not r.matched_required and not r.missing_required %}<em>No required skills to check</em>{% endif %}</p>
+    {% if r.matched_preferred %}<h3>Preferred skills found</h3><p>{% for s in r.matched_preferred %}<span class="chip soft">{{ s }}</span>{% endfor %}</p>{% endif %}
+    <h3>All skills detected ({{ r.skills|length }})</h3>
+    <p>{% for s in r.skills %}<span class="chip">{{ s }}</span>{% else %}<em>none</em>{% endfor %}</p>
+
+    {% if r.flags %}<h3>Review notes</h3><ul class="flags">{% for f in r.flags %}<li>{{ f }}</li>{% endfor %}</ul>{% endif %}
+  </div>
+</details>
+{% endfor %}
+
+<script type="application/json" id="resultsData">{{ results|tojson }}</script>
+{% elif not errors %}
+<div class="alert">No resumes could be processed.</div>
+{% endif %}
+{% endblock %}

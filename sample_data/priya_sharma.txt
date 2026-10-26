@@ -1,0 +1,31 @@
+PRIYA SHARMA
+priya.sharma@example.com | +91 98765 43210 | Lucknow, India
+
+SUMMARY
+Machine learning engineer with 5 years of experience building NLP and classification systems.
+
+EXPERIENCE
+Senior ML Engineer - Acme AI                                  Jan 2021 - Present
+- Built NLP text classification pipelines in Python using scikit-learn, Pandas and NumPy
+- Deployed models as REST APIs with Flask and Docker on AWS
+- Used Git, CI/CD and SQL (PostgreSQL) daily
+
+Data Scientist - DataWorks                                    Jul 2019 - Dec 2020
+- Developed machine learning models with TensorFlow and PyTorch
+
+EDUCATION
+M.Tech in Computer Science - IIT Kanpur, 2017 - 2019
+B.Tech in Computer Science - AKTU, 2013 - 2017
+
+PROJECTS
+Resume Parser
+- Extracted entities from resumes using spaCy and NLTK
+Fake News Detector
+- BERT based classifier using Hugging Face transformers
+
+CERTIFICATIONS
+AWS Certified Machine Learning - Specialty
+TensorFlow Developer Certificate
+
+SKILLS
+Python, SQL, Docker, Kubernetes, Git, AWS, Flask
