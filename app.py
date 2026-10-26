@@ -10,6 +10,7 @@ import os
 import re
 import secrets
 import sqlite3
+import tempfile
 from datetime import datetime, timedelta, timezone
 
 from flask import Flask, g, jsonify, redirect, render_template, request, url_for
@@ -33,9 +34,11 @@ PHONE_RE = re.compile(r"^\+?[0-9\s().-]{7,20}$")
 def create_app(database_path: str | None = None) -> Flask:
     app = Flask(__name__)
     app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "local-development-key")
-    app.config["DATABASE"] = database_path or os.environ.get(
-        "DATABASE_PATH", os.path.join(os.path.dirname(__file__), "smartscreen.sqlite3")
-    )
+    default_database = os.path.join(os.path.dirname(__file__), "smartscreen.sqlite3")
+    if os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME"):
+        # Vercel/Lambda only permits writes in the temporary directory.
+        default_database = os.path.join(tempfile.gettempdir(), "smartscreen.sqlite3")
+    app.config["DATABASE"] = database_path or os.environ.get("DATABASE_PATH", default_database)
     app.config["MAX_CONTENT_LENGTH"] = MAX_UPLOAD_MB * 1024 * 1024
     app.config["MAX_FORM_MEMORY_SIZE"] = 2 * 1024 * 1024
 
