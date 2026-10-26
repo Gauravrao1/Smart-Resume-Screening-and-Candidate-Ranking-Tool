@@ -221,6 +221,14 @@ def test_home_and_health(client):
     assert client.get("/health").get_json() == {"status": "ok"}
 
 
+def test_static_assets_are_served(client):
+    css = client.get("/static/style.css")
+    js = client.get("/static/app.js")
+    assert css.status_code == 200
+    assert "SmartScreen" in css.get_data(as_text=True)
+    assert js.status_code == 200
+
+
 def test_security_headers(client):
     h = client.get("/").headers
     assert h["X-Content-Type-Options"] == "nosniff"
