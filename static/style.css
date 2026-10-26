@@ -1110,3 +1110,105 @@ meter::-moz-meter-bar { background: var(--primary); }
   .auth-intro h1 { font-size: 2.6rem; }
   .account-menu > span { display: none; }
 }
+
+/* Inner pages use the same editorial serif style as the account screens. */
+.inner-page h1,
+.inner-page h2 {
+  font-family: "DM Serif Display", Georgia, "Times New Roman", serif;
+  font-weight: 400;
+  letter-spacing: -0.035em;
+}
+
+.results-page .bar {
+  align-items: center;
+  padding: 8px 0 20px;
+  border-bottom: 1px solid var(--border);
+}
+.results-page .bar h1 {
+  margin-top: 4px;
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  line-height: 1.05;
+}
+.results-page .bar h1 small {
+  font-family: Inter, ui-sans-serif, sans-serif;
+  letter-spacing: 0;
+}
+
+.results-page .summary-strip,
+.results-page .req,
+.results-page .tablewrap,
+.results-page .card {
+  width: 100%;
+  max-width: 100%;
+}
+.results-page .summary-strip {
+  gap: 0;
+  border: 1px solid var(--border);
+}
+.results-page .summary-strip div + div {
+  border-left: 1px solid var(--border);
+}
+.results-page .req {
+  padding: 30px 32px;
+}
+.results-page .req-heading h2 {
+  font-size: 1.8rem;
+  line-height: 1.15;
+}
+.results-page .tablewrap {
+  border-radius: var(--r-lg);
+}
+.results-page table.rank {
+  min-width: 760px;
+}
+.results-page table.rank th,
+.results-page table.rank td {
+  vertical-align: middle;
+}
+.results-page .card {
+  border-radius: var(--r-lg);
+}
+.results-page .card summary {
+  min-height: 68px;
+}
+.results-page .card .body {
+  padding: 0 28px 30px;
+}
+.results-page .card .grid > div {
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid var(--border-light);
+  border-radius: var(--r-md);
+  background: color-mix(in srgb, var(--card) 92%, var(--primary-bg));
+}
+.results-page .card .grid h3 {
+  margin-top: 0;
+}
+.results-page .card .body > h3 {
+  padding-top: 4px;
+}
+.results-page .chip {
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 768px) {
+  .results-page .bar {
+    align-items: flex-start;
+    padding-bottom: 16px;
+  }
+  .results-page .req {
+    padding: 22px 20px;
+  }
+  .results-page .summary-strip div + div {
+    border-left: 0;
+    border-top: 1px solid var(--border);
+  }
+  .results-page .card .body {
+    padding: 0 18px 22px;
+  }
+  .results-page .card .grid > div {
+    padding: 14px;
+  }
+}

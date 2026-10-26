@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block title %}{{ 'Sign in' if mode == 'login' else 'Create account' }} — SmartScreen{% endblock %}
+{% block body_class %}inner-page auth-page{% endblock %}
 {% block content %}
 <section class="auth-shell">
   <div class="auth-intro">

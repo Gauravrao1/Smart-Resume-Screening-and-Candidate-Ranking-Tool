@@ -8,11 +8,11 @@
   <!-- Preconnect for font performance -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700;800&display=swap">
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect rx='18' width='100' height='100' fill='%236366f1'/><text x='50%25' y='56%25' dominant-baseline='middle' text-anchor='middle' font-size='55' font-weight='800' fill='white'>S</text></svg>">
 </head>
-<body>
+<body class="{% block body_class %}{% endblock %}">
   <header class="top">
     <div class="top-inner">
       <a class="brand" href="{{ url_for('index') }}"><span class="brand-mark">S</span><span>Smart</span>Screen</a>
