@@ -1,4 +1,9 @@
-"""Flask web app for the Smart Resume Screening and Candidate Ranking Tool."""
+"""Flask web app for the Smart Resume Screening and Candidate Ranking Tool.
+
+Vercel-compatible: runs as a Python serverless function.
+Vercel body limit is ~4.5 MB per request, so MAX_UPLOAD_MB is capped at 4.
+For larger uploads, self-host with gunicorn / waitress.
+"""
 from __future__ import annotations
 
 import os
@@ -9,8 +14,10 @@ from werkzeug.utils import secure_filename
 
 from screening import ALLOWED_EXTENSIONS, screen
 
-MAX_FILES = 30
-MAX_UPLOAD_MB = 16
+# Vercel serverless body limit ≈ 4.5 MB; stay safely under it.
+# Change to 16 if self-hosting with gunicorn / waitress.
+MAX_UPLOAD_MB = int(os.environ.get("MAX_UPLOAD_MB", "4"))
+MAX_FILES = int(os.environ.get("MAX_FILES", "10"))
 MIN_JD_CHARS = 30
 MAX_JD_CHARS = 20_000
 
@@ -56,7 +63,8 @@ def create_app() -> Flask:
 
     @app.get("/")
     def index():
-        return render_template("index.html", error=None, jd_text="", extra="", exts=sorted(ALLOWED_EXTENSIONS),
+        return render_template("index.html", error=None, jd_text="", extra="",
+                               exts=sorted(ALLOWED_EXTENSIONS),
                                max_files=MAX_FILES, max_mb=MAX_UPLOAD_MB)
 
     @app.post("/screen")
@@ -64,7 +72,8 @@ def create_app() -> Flask:
         jd, extra, files, error = read_request()
         if error:
             return render_template("index.html", error=error, jd_text=jd, extra=extra,
-                                   exts=sorted(ALLOWED_EXTENSIONS), max_files=MAX_FILES, max_mb=MAX_UPLOAD_MB), 400
+                                   exts=sorted(ALLOWED_EXTENSIONS),
+                                   max_files=MAX_FILES, max_mb=MAX_UPLOAD_MB), 400
         data = screen(jd, files, extra)
         return render_template("results.html", **data)
 
@@ -84,7 +93,8 @@ def create_app() -> Flask:
         msg = f"Upload too large. Total size must be under {MAX_UPLOAD_MB} MB."
         if request.path.startswith("/api/"):
             return jsonify({"error": msg}), 413
-        return render_template("index.html", error=msg, jd_text="", extra="", exts=sorted(ALLOWED_EXTENSIONS),
+        return render_template("index.html", error=msg, jd_text="", extra="",
+                               exts=sorted(ALLOWED_EXTENSIONS),
                                max_files=MAX_FILES, max_mb=MAX_UPLOAD_MB), 413
 
     return app
@@ -94,5 +104,8 @@ app = create_app()
 
 if __name__ == "__main__":
     # debug is OFF by default (the Werkzeug debugger allows remote code execution).
-    app.run(host=os.environ.get("HOST", "127.0.0.1"), port=int(os.environ.get("PORT", 5000)),
-            debug=os.environ.get("FLASK_DEBUG") == "1")
+    app.run(
+        host=os.environ.get("HOST", "127.0.0.1"),
+        port=int(os.environ.get("PORT", 5000)),
+        debug=os.environ.get("FLASK_DEBUG") == "1",
+    )

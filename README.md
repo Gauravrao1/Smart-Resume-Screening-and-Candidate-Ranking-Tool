@@ -10,6 +10,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Tests](https://img.shields.io/badge/Tests-35%20passing-brightgreen?logo=pytest&logoColor=white)](#-testing)
 [![Code Style](https://img.shields.io/badge/Code%20Style-PEP%208-blue)](https://peps.python.org/pep-0008/)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/YOUR_USERNAME/resume-screener)
 
 ---
 
@@ -379,6 +380,113 @@ The [`sample_data/`](sample_data/) directory contains a sample job description a
 
 ---
 
+## ☁️ Deploy to Vercel
+
+SmartScreen is Vercel-ready out of the box. One-click deploy:
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/YOUR_USERNAME/resume-screener)
+
+> Replace `YOUR_USERNAME` in the badge URL above with your GitHub username after pushing the repo.
+
+### Prerequisites
+
+- A [Vercel account](https://vercel.com) (free tier works)
+- Your code pushed to a **GitHub** / **GitLab** / **Bitbucket** repository
+
+### Step-by-Step Deployment
+
+#### Option A — Vercel Dashboard (recommended for beginners)
+
+1. **Push to GitHub**
+   ```bash
+   git init
+   git add .
+   git commit -m "Initial commit"
+   git remote add origin https://github.com/YOUR_USERNAME/resume-screener.git
+   git push -u origin main
+   ```
+
+2. **Import on Vercel**
+   - Go to [vercel.com/new](https://vercel.com/new)
+   - Click **Import** next to your `resume-screener` repository
+   - Leave all settings as default — Vercel auto-detects the Python project
+   - Click **Deploy** ✅
+
+3. **Done!** Your app is live at `https://resume-screener-xxx.vercel.app`
+
+---
+
+#### Option B — Vercel CLI
+
+```bash
+# Install the Vercel CLI
+npm i -g vercel
+
+# Log in
+vercel login
+
+# Deploy from the project directory
+cd resume-screener
+vercel
+
+# Follow the prompts — for production:
+vercel --prod
+```
+
+---
+
+### How Vercel Runs This App
+
+| Aspect | Detail |
+|--------|--------|
+| **Runtime** | Python 3.12 (serverless function via `@vercel/python`) |
+| **Entry point** | `app.py` — the `app` object is used as the WSGI handler |
+| **Static files** | `/static/**` served by Vercel's CDN edge network |
+| **Routing** | All non-static requests → `app.py` |
+| **Region** | `bom1` (Mumbai) by default — change in `vercel.json` |
+| **Bundle size** | capped at **50 MB** (`maxLambdaSize`) |
+| **Upload limit** | **4 MB** per request on Vercel free tier (vs 16 MB self-hosted) |
+| **Max files** | **10** per request on Vercel (vs 30 self-hosted) |
+
+> **Why lower limits on Vercel?**  
+> Vercel serverless functions have a ~4.5 MB body payload limit. The defaults in `vercel.json` respect this. For full 16 MB / 30-file support, self-host with `gunicorn` or `waitress`.
+
+---
+
+### Files Added for Vercel
+
+| File | Purpose |
+|------|---------|
+| [`vercel.json`](vercel.json) | Build config, routing rules, environment variables |
+| [`runtime.txt`](runtime.txt) | Pin Python version to 3.12 |
+| [`.gitignore`](.gitignore) | Excludes `__pycache__`, `.venv`, `.vercel` from Git |
+
+---
+
+### Environment Variables on Vercel
+
+You can override limits in the Vercel dashboard under **Settings → Environment Variables**:
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `MAX_UPLOAD_MB` | `4` | Max total upload size (MB) |
+| `MAX_FILES` | `10` | Max resumes per request |
+| `FLASK_ENV` | `production` | Flask environment mode |
+
+---
+
+### Troubleshooting Vercel Deploys
+
+| Problem | Fix |
+|---------|-----|
+| `Module not found: screening` | Ensure `screening/` folder is committed (not in `.gitignore`) |
+| `Function size exceeded` | scikit-learn is large (~50 MB); `maxLambdaSize: "50mb"` is already set |
+| `413 Request Too Large` | Vercel hard-limits request body to ~4.5 MB; reduce resume file sizes |
+| `500 on PDF upload` | pypdf must be installed; check `requirements.txt` is committed |
+| Static CSS/JS not loading | Verify the `/static/(.*)` route in `vercel.json` is present |
+
+---
+
 ## 📡 API Reference
 
 ### `POST /api/screen`
@@ -514,6 +622,9 @@ pytest tests/ --cov=screening --cov-report=term-missing
 ```
 resume-screener/
 ├── app.py                          # Flask app — routes, validation, security headers
+├── vercel.json                     # Vercel deployment config (builds, routes, env vars)
+├── runtime.txt                     # Python version pin for Vercel (3.12)
+├── .gitignore                      # Git ignore rules
 ├── requirements.txt                # Runtime dependencies
 ├── requirements-dev.txt            # Test dependencies (pytest, reportlab)
 ├── README.md                       # This file
