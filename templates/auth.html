@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Sign in' if mode == 'login' else 'Create account' }} — SmartScreen{% endblock %}
+{% block content %}
+<section class="auth-shell">
+  <div class="auth-intro">
+    <p class="eyebrow">SMARTSCREEN</p>
+    <h1>{{ 'Welcome back.' if mode == 'login' else 'Start with a clear shortlist.' }}</h1>
+    <p>{{ 'Sign in to continue screening resumes for your team.' if mode == 'login' else 'Create your workspace and keep your screening work organised.' }}</p>
+  </div>
+  <div class="auth-card">
+    <div class="auth-card-heading">
+      <div>
+        <span class="section-kicker">{{ 'ACCOUNT' if mode == 'login' else 'YOUR DETAILS' }}</span>
+        <h2>{{ 'Sign in' if mode == 'login' else 'Create your account' }}</h2>
+      </div>
+      <span class="auth-mark" aria-hidden="true">S</span>
+    </div>
+    {% if error %}<div class="alert" role="alert">{{ error }}</div>{% endif %}
+    {% if request.args.get('registered') %}<div class="notice" role="status">Your account is ready. Sign in to continue.</div>{% endif %}
+    <form method="post">
+      {% if mode == 'login' %}
+      <div class="field">
+        <label for="identifier">Email or phone number</label>
+        <input id="identifier" name="identifier" type="text" value="{{ identifier }}" autocomplete="username" required>
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required>
+      </div>
+      <button class="btn primary auth-submit" type="submit">Sign in</button>
+      <p class="auth-switch">New here? <a href="{{ url_for('register') }}">Create an account</a></p>
+      {% else %}
+      <div class="field">
+        <label for="name">Full name</label>
+        <input id="name" name="name" type="text" value="{{ name }}" autocomplete="name" required>
+      </div>
+      <div class="auth-two-col">
+        <div class="field">
+          <label for="email">Work email</label>
+          <input id="email" name="email" type="email" value="{{ email }}" autocomplete="email" required>
+        </div>
+        <div class="field">
+          <label for="phone">Phone number</label>
+          <input id="phone" name="phone" type="tel" value="{{ phone }}" autocomplete="tel" required>
+        </div>
+      </div>
+      <div class="field">
+        <label for="company_name">Company name</label>
+        <input id="company_name" name="company_name" type="text" value="{{ company_name }}" autocomplete="organization" required>
+      </div>
+      <div class="field">
+        <label for="password">Password <small>(at least 8 characters)</small></label>
+        <input id="password" name="password" type="password" autocomplete="new-password" minlength="8" required>
+      </div>
+      <button class="btn primary auth-submit" type="submit">Create account</button>
+      <p class="auth-switch">Already have an account? <a href="{{ url_for('login') }}">Sign in</a></p>
+      {% endif %}
+    </form>
+  </div>
+</section>
+{% endblock %}

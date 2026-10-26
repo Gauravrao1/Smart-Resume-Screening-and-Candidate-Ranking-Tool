@@ -17,10 +17,18 @@
     <div class="top-inner">
       <a class="brand" href="{{ url_for('index') }}"><span class="brand-mark">S</span><span>Smart</span>Screen</a>
       <span class="tag">Resume screening workspace</span>
+      {% if user %}
       <nav class="top-nav" aria-label="Primary navigation">
         <a href="{{ url_for('index') }}">New screening</a>
       </nav>
-      <span class="secure-note"><span class="status-dot"></span>Private &amp; secure</span>
+      <div class="account-menu">
+        <span>{{ user['name'] }}</span>
+        <form method="post" action="{{ url_for('logout') }}"><button type="submit">Sign out</button></form>
+      </div>
+      {% else %}
+      <a class="header-login" href="{{ url_for('login') }}">Sign in</a>
+      <a class="btn header-cta" href="{{ url_for('register') }}">Create account</a>
+      {% endif %}
     </div>
   </header>
   <main class="wrap">{% block content %}{% endblock %}</main>

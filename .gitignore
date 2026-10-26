@@ -43,3 +43,6 @@ htmlcov/
 # Secrets / local config
 .env.local
 .env.production.local
+
+# Local account database
+smartscreen.sqlite3

@@ -204,10 +204,22 @@ def test_parser_rejects_bad_input():
 
 # ---------------- web app ----------------
 @pytest.fixture()
-def client():
-    app = create_app()
+def client(tmp_path):
+    app = create_app(str(tmp_path / "test.sqlite3"))
     app.config["TESTING"] = True
-    return app.test_client()
+    client = app.test_client()
+    client.post("/register", data={
+        "name": "Test User",
+        "email": "test@example.com",
+        "phone": "+1 415 555 0100",
+        "company_name": "Test Company",
+        "password": "password123",
+    })
+    client.post("/login", data={
+        "identifier": "test@example.com",
+        "password": "password123",
+    })
+    return client
 
 
 def _post(client, path, jd=JD, files=None, extra=""):
@@ -219,6 +231,21 @@ def _post(client, path, jd=JD, files=None, extra=""):
 def test_home_and_health(client):
     assert client.get("/").status_code == 200
     assert client.get("/health").get_json() == {"status": "ok"}
+
+
+def test_auth_pages_and_login(client):
+    client.delete_cookie("auth_token")
+    assert client.get("/").status_code == 302
+    assert client.get("/login").status_code == 200
+    assert client.get("/register").status_code == 200
+    failed = client.post("/login", data={"identifier": "test@example.com", "password": "wrong"})
+    assert failed.status_code == 200
+    assert "not correct" in failed.get_data(as_text=True)
+    logged_in = client.post("/login", data={
+        "identifier": "+1 415 555 0100",
+        "password": "password123",
+    })
+    assert logged_in.status_code == 302
 
 
 def test_static_assets_are_served(client):
