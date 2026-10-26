@@ -3,20 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}Smart Resume Screener{% endblock %}</title>
+  <meta name="description" content="AI-powered resume screening and candidate ranking tool. Upload resumes, paste a job description, and get every candidate ranked with explainable scores.">
+  <title>{% block title %}SmartScreen — AI Resume Screening{% endblock %}</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect rx='18' width='100' height='100' fill='%236366f1'/><text x='50%25' y='56%25' dominant-baseline='middle' text-anchor='middle' font-size='55' font-weight='800' fill='white'>S</text></svg>">
 </head>
 <body>
   <header class="top">
     <div class="top-inner">
       <a class="brand" href="{{ url_for('index') }}"><span class="brand-mark">S</span><span>Smart</span>Screen</a>
-      <span class="tag">Resume screening &amp; candidate ranking</span>
-      <nav class="top-nav" aria-label="Primary navigation"><a href="{{ url_for('index') }}">Workspace</a><a href="#how-it-works">How it works</a></nav>
-      <span class="secure-note"><span class="status-dot"></span>Private by design</span>
+      <span class="tag">AI-powered resume screening &amp; candidate ranking</span>
+      <nav class="top-nav" aria-label="Primary navigation">
+        <a href="{{ url_for('index') }}">Workspace</a>
+        <a href="#how-it-works">How it works</a>
+      </nav>
+      <span class="secure-note"><span class="status-dot"></span>Private &amp; secure</span>
     </div>
   </header>
   <main class="wrap">{% block content %}{% endblock %}</main>
-  <footer class="foot">Resumes are processed in memory and never stored. Scores are decision support - always review candidates yourself.</footer>
+  <footer class="foot">All resumes are processed in memory and never stored on any server. Scores are decision support — always review candidates yourself.</footer>
   <script src="{{ url_for('static', filename='app.js') }}"></script>
 </body>
 </html>

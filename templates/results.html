@@ -1,14 +1,14 @@
 {% extends "base.html" %}
-{% block title %}Results - Smart Resume Screener{% endblock %}
+{% block title %}Results — SmartScreen{% endblock %}
 {% block content %}
 <div class="bar">
   <div>
-    <p class="eyebrow">SCREENING COMPLETE <span></span> 02</p>
+    <p class="eyebrow">SCREENING COMPLETE <span></span> RESULTS</p>
     <h1>Ranked candidates <small>({{ results|length }})</small></h1>
   </div>
   <div class="actions">
-    <button class="btn" type="button" id="csvBtn" {% if not results %}disabled{% endif %}>Download CSV</button>
-    <a class="btn primary" href="{{ url_for('index') }}">New screening</a>
+    <button class="btn" type="button" id="csvBtn" {% if not results %}disabled{% endif %}>📥 Download CSV</button>
+    <a class="btn primary" href="{{ url_for('index') }}">＋ New screening</a>
   </div>
 </div>
 
@@ -16,12 +16,18 @@
 <div class="summary-strip">
   <div><strong>{{ results|length }}</strong><span>candidates reviewed</span></div>
   <div><strong>{{ results[0].score }}</strong><span>top candidate score</span></div>
-  <div><strong>{{ requirements.required_skills|length }}</strong><span>required skills found</span></div>
+  <div><strong>{{ requirements.required_skills|length }}</strong><span>required skills identified</span></div>
 </div>
 {% endif %}
 
 <section class="panel req">
-  <div class="req-heading"><div><span class="section-kicker">ROLE SNAPSHOT</span><h2>What the job asks for</h2></div><span class="brief-icon">✦</span></div>
+  <div class="req-heading">
+    <div>
+      <span class="section-kicker">ROLE SNAPSHOT</span>
+      <h2>What the job asks for</h2>
+    </div>
+    <span class="brief-icon">🎯</span>
+  </div>
   <dl>
     <dt>Required skills</dt>
     <dd>{% for s in requirements.required_skills %}<span class="chip">{{ s }}</span>{% else %}<em>None recognised</em>{% endfor %}</dd>
@@ -81,7 +87,7 @@
       <div>
         <h3>Profile</h3>
         <p><b>Experience:</b> {{ '%g'|format(r.experience_years) }} years</p>
-        <p><b>Education:</b> {{ r.education_label }}{% if r.education_detail %} <small>- {{ r.education_detail }}</small>{% endif %}</p>
+        <p><b>Education:</b> {{ r.education_label }}{% if r.education_detail %} <small>— {{ r.education_detail }}</small>{% endif %}</p>
         <p><b>Certifications:</b> {% if r.certifications %}{{ r.certifications|join('; ') }}{% else %}<em>none found</em>{% endif %}</p>
         <p><b>Projects:</b> {% if r.projects %}{{ r.projects|join('; ') }}{% else %}<em>none found</em>{% endif %}</p>
       </div>
