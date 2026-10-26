@@ -33,8 +33,14 @@ def create_app() -> Flask:
         resp.headers["X-Frame-Options"] = "DENY"
         resp.headers["Referrer-Policy"] = "no-referrer"
         resp.headers["Content-Security-Policy"] = (
-            "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; "
-            "form-action 'self'; frame-ancestors 'none'; base-uri 'none'"
+            "default-src 'self'; "
+            "script-src 'self'; "
+            "style-src 'self' https://fonts.googleapis.com; "
+            "font-src 'self' https://fonts.gstatic.com; "
+            "img-src 'self' data:; "
+            "form-action 'self'; "
+            "frame-ancestors 'none'; "
+            "base-uri 'none'"
         )
         resp.headers["Cache-Control"] = "no-store"
         return resp
