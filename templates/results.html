@@ -3,12 +3,12 @@
 {% block content %}
 <div class="bar">
   <div>
-    <p class="eyebrow">SCREENING COMPLETE <span></span> RESULTS</p>
+    <p class="eyebrow">SCREENING RESULTS</p>
     <h1>Ranked candidates <small>({{ results|length }})</small></h1>
   </div>
   <div class="actions">
-    <button class="btn" type="button" id="csvBtn" {% if not results %}disabled{% endif %}>📥 Download CSV</button>
-    <a class="btn primary" href="{{ url_for('index') }}">＋ New screening</a>
+    <button class="btn" type="button" id="csvBtn" {% if not results %}disabled{% endif %}>Download CSV</button>
+    <a class="btn primary" href="{{ url_for('index') }}">New screening</a>
   </div>
 </div>
 
@@ -23,10 +23,10 @@
 <section class="panel req">
   <div class="req-heading">
     <div>
-      <span class="section-kicker">ROLE SNAPSHOT</span>
-      <h2>What the job asks for</h2>
+      <span class="section-kicker">ROLE SUMMARY</span>
+      <h2>What you are looking for</h2>
     </div>
-    <span class="brief-icon">🎯</span>
+    <span class="brief-icon" aria-hidden="true">✓</span>
   </div>
   <dl>
     <dt>Required skills</dt>

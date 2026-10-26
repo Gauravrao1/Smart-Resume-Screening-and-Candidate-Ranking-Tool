@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
 <section class="hero">
-  <p class="eyebrow">CANDIDATE INTELLIGENCE <span></span> POWERED BY NLP</p>
-  <h1>Screen resumes in seconds, not hours</h1>
-  <p>Paste a job description, upload resumes, and let AI rank every candidate with transparent, explainable scores.</p>
+  <p class="eyebrow">RESUME SCREENING</p>
+  <h1>Find the right candidates faster</h1>
+  <p>Compare resumes with your job description and get a clear shortlist to review.</p>
 </section>
 
 {% if error %}<div class="alert" role="alert">{{ error }}</div>{% endif %}
@@ -11,8 +11,8 @@
 <form class="panel form-panel" method="post" action="{{ url_for('screen_page') }}" enctype="multipart/form-data" id="screenForm">
   <div class="panel-heading">
     <div>
-      <span class="section-kicker">START A SCREENING</span>
-      <h2>Tell us what you're looking for</h2>
+      <span class="section-kicker">NEW SCREENING</span>
+      <h2>Set up your search</h2>
     </div>
     <span class="step-count">3 steps</span>
   </div>
@@ -20,24 +20,24 @@
   <div class="field">
     <div class="label-row">
       <label for="jd_text">1. Job description</label>
-      <button type="button" class="link" id="loadSample" data-url="{{ url_for('static', filename='sample/job_description.txt') }}">Load sample ↗</button>
+      <button type="button" class="link" id="loadSample" data-url="{{ url_for('static', filename='sample/job_description.txt') }}">Use an example</button>
     </div>
     <textarea id="jd_text" name="jd_text" rows="11" required maxlength="20000"
       placeholder="Paste the full job description here. Include required skills, years of experience, education requirements, and put optional skills under a 'Nice to have' heading for best results.">{{ jd_text }}</textarea>
   </div>
 
   <div class="field">
-    <label for="extra_skills">2. Extra required skills <small>(optional — comma-separated)</small></label>
+    <label for="extra_skills">2. Extra skills <small>(optional, comma-separated)</small></label>
     <input id="extra_skills" name="extra_skills" maxlength="500" value="{{ extra }}" placeholder="e.g. Python, Docker, communication, leadership">
   </div>
 
   <div class="field">
     <label for="resumes">3. Upload resumes <small>({{ exts|join(', ') }} · up to {{ max_files }} files · {{ max_mb }} MB total)</small></label>
     <label class="upload-box" for="resumes" id="uploadBox">
-      <span class="upload-icon">↑</span>
+      <span class="upload-icon" aria-hidden="true">+</span>
       <span>
-        <strong>Drop resumes here or <u>browse files</u></strong>
-        <small>PDF, DOCX or TXT · drag and drop supported</small>
+        <strong>Drop resumes here or <u>choose files</u></strong>
+        <small>PDF, DOCX or TXT · up to {{ max_files }} files</small>
       </span>
     </label>
     <input class="visually-hidden" id="resumes" name="resumes" type="file" multiple required accept="{{ exts|join(',') }}">
@@ -45,29 +45,29 @@
   </div>
 
   <div class="form-footer">
-    <span class="helper"><span class="lock">🔒</span> Files are processed in memory and never stored.</span>
-    <button class="btn primary big" type="submit" id="submitBtn">Screen &amp; rank candidates <span>→</span></button>
+    <span class="helper"><span class="lock" aria-hidden="true">•</span> Files are processed in memory.</span>
+    <button class="btn primary big" type="submit" id="submitBtn">Review candidates <span>→</span></button>
   </div>
 </form>
 
-<section class="feature-row" id="how-it-works" aria-label="How SmartScreen works">
+<section class="feature-row" aria-label="How it works">
   <div class="feature-card">
     <span class="feature-number">01</span>
-    <span class="feature-icon">🎯</span>
-    <h3>Understand the role</h3>
-    <p>NLP parses your job description to identify must-have skills, experience requirements, and education level.</p>
+    <span class="feature-icon" aria-hidden="true">1</span>
+    <h3>Describe the role</h3>
+    <p>Add the job description and any skills you want to prioritise.</p>
   </div>
   <div class="feature-card">
     <span class="feature-number">02</span>
-    <span class="feature-icon">📄</span>
-    <h3>Read every resume</h3>
-    <p>Each resume is parsed, sectioned, and profiled — extracting skills, experience, education, and certifications.</p>
+    <span class="feature-icon" aria-hidden="true">2</span>
+    <h3>Add resumes</h3>
+    <p>Upload PDF, DOCX, or TXT files and we will compare them for you.</p>
   </div>
   <div class="feature-card">
     <span class="feature-number">03</span>
-    <span class="feature-icon">📊</span>
-    <h3>Rank with explainable AI</h3>
-    <p>TF-IDF similarity and multi-factor scoring produce a transparent 0-100 score with full breakdown.</p>
+    <span class="feature-icon" aria-hidden="true">3</span>
+    <h3>Review the shortlist</h3>
+    <p>See each candidate's strengths, gaps, and score in one place.</p>
   </div>
 </section>
 {% endblock %}

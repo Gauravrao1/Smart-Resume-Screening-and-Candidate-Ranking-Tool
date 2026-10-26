@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="AI-powered resume screening and candidate ranking tool. Upload resumes, paste a job description, and get every candidate ranked with explainable scores.">
-  <title>{% block title %}SmartScreen — AI Resume Screening{% endblock %}</title>
+  <meta name="description" content="A simple tool for comparing resumes against a job description.">
+  <title>{% block title %}SmartScreen — Resume screening{% endblock %}</title>
   <!-- Preconnect for font performance -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,16 +16,15 @@
   <header class="top">
     <div class="top-inner">
       <a class="brand" href="{{ url_for('index') }}"><span class="brand-mark">S</span><span>Smart</span>Screen</a>
-      <span class="tag">AI-powered resume screening &amp; candidate ranking</span>
+      <span class="tag">Resume screening workspace</span>
       <nav class="top-nav" aria-label="Primary navigation">
-        <a href="{{ url_for('index') }}">Workspace</a>
-        <a href="#how-it-works">How it works</a>
+        <a href="{{ url_for('index') }}">New screening</a>
       </nav>
       <span class="secure-note"><span class="status-dot"></span>Private &amp; secure</span>
     </div>
   </header>
   <main class="wrap">{% block content %}{% endblock %}</main>
-  <footer class="foot">All resumes are processed in memory and never stored on any server. Scores are decision support — always review candidates yourself.</footer>
+  <footer class="foot">Your files are processed in memory and never stored. Review results before making a decision.</footer>
   <script src="{{ url_for('static', filename='app.js') }}"></script>
 </body>
 </html>
