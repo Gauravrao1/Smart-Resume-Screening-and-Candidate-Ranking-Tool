@@ -363,7 +363,12 @@ label {
 }
 label small, small { font-weight: 400; color: var(--muted); }
 
-textarea, input[type=text], input:not([type]) {
+textarea,
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="password"],
+input:not([type]) {
   width: 100%;
   padding: 13px 15px;
   border: 1.5px solid var(--border);
@@ -952,7 +957,12 @@ body::before { display: none; }
 .panel { box-shadow: var(--shadow-md); }
 .form-panel::before, .form-panel::after { display: none; }
 .step-count { background: var(--card); }
-textarea, input[type=text], input:not([type]) { background: #fbfcfb; }
+textarea,
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="password"],
+input:not([type]) { background: #fbfcfb; }
 textarea:focus, input:focus {
   box-shadow: 0 0 0 3px rgba(47, 107, 82, 0.14);
 }
